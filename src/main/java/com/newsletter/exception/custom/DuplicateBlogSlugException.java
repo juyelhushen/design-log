@@ -1,4 +1,4 @@
-package com.newsletter.exception;
+package com.newsletter.exception.custom;
 
 public class DuplicateBlogSlugException extends RuntimeException {
     public DuplicateBlogSlugException(String message) {

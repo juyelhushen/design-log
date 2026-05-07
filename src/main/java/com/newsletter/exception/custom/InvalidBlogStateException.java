@@ -1,4 +1,4 @@
-package com.newsletter.exception;
+package com.newsletter.exception.custom;
 
 public class InvalidBlogStateException extends RuntimeException {
     public InvalidBlogStateException(String message) {
