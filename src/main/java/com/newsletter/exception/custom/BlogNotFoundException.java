@@ -1,4 +1,4 @@
-package com.newsletter.exception;
+package com.newsletter.exception.custom;
 
 public class BlogNotFoundException extends RuntimeException {
     public BlogNotFoundException(String message) {
