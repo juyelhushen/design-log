@@ -3,6 +3,7 @@ package com.newsletter.exception;
 import com.newsletter.exception.custom.BlogNotFoundException;
 import com.newsletter.exception.custom.DuplicateBlogSlugException;
 import com.newsletter.exception.custom.InvalidBlogStateException;
+import com.newsletter.exception.custom.InvalidTokenException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -63,6 +64,17 @@ public class GlobalExceptionHandler {
                         .message(message)
                         .build()
         );
+    }
+
+
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<ApiErrorResponse> handleInvalidToken(InvalidTokenException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(ApiErrorResponse.builder()
+                        .status(HttpStatus.UNAUTHORIZED.value())
+                        .error("Unauthorized")
+                        .message(ex.getMessage())
+                        .build());
     }
 
 }
