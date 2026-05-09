@@ -45,8 +45,12 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                 .user(UserMapper.toProfileResponse(user))
                 .build();
 
-        response.setStatus(HttpServletResponse.SC_OK);
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        objectMapper.writeValue(response.getWriter(), body);
+        String redirectUrl = String.format(
+                "http://localhost:5173/oauth-success?accessToken=%s&refreshToken=%s",
+                accessToken,
+                refreshToken
+        );
+
+        response.sendRedirect(redirectUrl);
     }
 }
