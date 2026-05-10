@@ -8,6 +8,7 @@ import com.newsletter.exception.custom.InvalidBlogStateException;
 import com.newsletter.mapper.BlogMapper;
 import com.newsletter.repository.BlogPostRepository;
 import com.newsletter.service.BlogPostService;
+import com.newsletter.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +31,7 @@ public class BlogPostServiceImpl implements BlogPostService {
     private static final Pattern DUPLICATE_DASHES = Pattern.compile("-+");
 
     private final BlogPostRepository blogRepository;
+    private final SecurityUtils securityUtils;
 
     @Override
     public BlogResponse createBlog(BlogCreateRequest request) {
@@ -40,6 +42,7 @@ public class BlogPostServiceImpl implements BlogPostService {
                 .summary(request.summery() != null ? request.summery().trim() : null)
                 .content(request.content().trim())
                 .status(PostStatus.DRAFT)
+                .author(securityUtils.getCurrentUser())
                 .tags(safeTags(request.tags()))
                 .build();
 
