@@ -3,6 +3,7 @@ package com.newsletter.security;
 import com.newsletter.config.JwtProperties;
 import com.newsletter.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
@@ -18,6 +19,8 @@ public class JwtService {
 
     private final JwtEncoder jwtEncoder;
     private final JwtProperties jwtProperties;
+
+
 
     public String generateAccessToken(User user) {
         Instant now = Instant.now();
