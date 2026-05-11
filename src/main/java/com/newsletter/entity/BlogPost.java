@@ -55,4 +55,7 @@ public class BlogPost extends BaseEntity {
     @Column(name = "tags", length = 50)
     @Builder.Default
     private List<String> tags = new ArrayList<>();
+
+    @Column(name = "deleted", nullable = false)
+    private boolean deleted = false;
 }

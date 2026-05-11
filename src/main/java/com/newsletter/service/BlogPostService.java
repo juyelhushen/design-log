@@ -10,6 +10,8 @@ public interface BlogPostService {
 
     BlogResponse getBlogBySlug(String slug);
 
+    Page<BlogListItemResponse> getMyBlogs(Pageable pageable);
+
     Page<BlogListItemResponse> getAllBlogs(Pageable pageable);
 
     BlogResponse updateBlog(Long id, BlogUpdateRequest request);

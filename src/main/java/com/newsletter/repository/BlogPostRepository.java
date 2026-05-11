@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public interface BlogPostRepository extends JpaRepository<BlogPost, Long> {
@@ -17,6 +18,8 @@ public interface BlogPostRepository extends JpaRepository<BlogPost, Long> {
     boolean existsBySlug(String slug);
 
     Page<BlogPost> findByStatus(PostStatus status, Pageable pageable);
+
+    Page<BlogPost> findByAuthorIdAndDeletedFalse(UUID authorId, Pageable pageable);
 
     Page<BlogPost> findByTitleContainingIgnoreCaseOrSummaryContainingIgnoreCaseOrContentContainingIgnoreCase(
             String title,

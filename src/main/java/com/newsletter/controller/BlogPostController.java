@@ -39,6 +39,16 @@ public class BlogPostController {
         return ResponseEntity.ok(blogService.getAllBlogs(pageable));
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<Page<BlogListItemResponse>> getMyBlogs(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "createdAt,desc") String sort
+    ) {
+        Pageable pageable = buildPageable(page, size, sort);
+        return ResponseEntity.ok(blogService.getMyBlogs(pageable));
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<BlogResponse> updateBlog(
             @PathVariable Long id,
