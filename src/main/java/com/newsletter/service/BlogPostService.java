@@ -22,4 +22,5 @@ public interface BlogPostService {
 
     Page<BlogListItemResponse> searchBlogs(String query, Pageable pageable);
 
+    public BlogResponse getBlogById(Long id);
 }

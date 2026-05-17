@@ -19,6 +19,11 @@ public class BlogPostController {
 
     private final BlogPostService blogService;
 
+//    @GetMapping("/id/{id}")
+//    public ResponseEntity<BlogResponse> getBlogById(@PathVariable Long id) {
+//        return ResponseEntity.ok(blogService.getBlogById(id));
+//    }
+
     @PostMapping
     public ResponseEntity<BlogResponse> createBlog(@Valid @RequestBody BlogCreateRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(blogService.createBlog(request));
@@ -37,6 +42,11 @@ public class BlogPostController {
     ) {
         Pageable pageable = buildPageable(page, size, sort);
         return ResponseEntity.ok(blogService.getAllBlogs(pageable));
+    }
+
+    @GetMapping("/by-id/{id}")
+    public ResponseEntity<BlogResponse> getBlogById(@PathVariable Long id) {
+        return ResponseEntity.ok(blogService.getBlogById(id));
     }
 
     @GetMapping("/me")

@@ -175,4 +175,11 @@ public class BlogPostServiceImpl implements BlogPostService {
         return slug;
     }
 
+
+    @Override
+    public BlogResponse getBlogById(Long id) {
+        BlogPost blogPost = getBlogOrThrow(id);
+        return BlogMapper.toResponse(blogPost);
+    }
+
 }
