@@ -10,6 +10,8 @@ public interface BlogPostService {
 
     BlogResponse getBlogBySlug(String slug);
 
+    Page<BlogListItemResponse> getMyBlogs(Pageable pageable);
+
     Page<BlogListItemResponse> getAllBlogs(Pageable pageable);
 
     BlogResponse updateBlog(Long id, BlogUpdateRequest request);
@@ -20,4 +22,5 @@ public interface BlogPostService {
 
     Page<BlogListItemResponse> searchBlogs(String query, Pageable pageable);
 
+    public BlogResponse getBlogById(Long id);
 }

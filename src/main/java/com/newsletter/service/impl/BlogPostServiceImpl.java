@@ -3,6 +3,7 @@ package com.newsletter.service.impl;
 import com.newsletter.dto.*;
 import com.newsletter.entity.BlogPost;
 import com.newsletter.entity.PostStatus;
+import com.newsletter.entity.User;
 import com.newsletter.exception.custom.BlogNotFoundException;
 import com.newsletter.exception.custom.InvalidBlogStateException;
 import com.newsletter.mapper.BlogMapper;
@@ -55,6 +56,14 @@ public class BlogPostServiceImpl implements BlogPostService {
         BlogPost blogPost = blogRepository.findBySlug(slug)
                 .orElseThrow(() -> new BlogNotFoundException("Blog not found for slug: " + slug));
         return BlogMapper.toResponse(blogPost);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<BlogListItemResponse> getMyBlogs(Pageable pageable) {
+        User currentUser = securityUtils.getCurrentUser();
+        return blogRepository.findByAuthorIdAndDeletedFalse(currentUser.getId(), pageable)
+                .map(BlogMapper::toListItemResponse);
     }
 
     @Override
@@ -164,6 +173,13 @@ public class BlogPostServiceImpl implements BlogPostService {
             throw new IllegalArgumentException("Unable to generate slug from title");
         }
         return slug;
+    }
+
+
+    @Override
+    public BlogResponse getBlogById(Long id) {
+        BlogPost blogPost = getBlogOrThrow(id);
+        return BlogMapper.toResponse(blogPost);
     }
 
 }
