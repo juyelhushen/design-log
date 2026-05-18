@@ -1,8 +1,9 @@
 package com.newsletter.controller;
 
-import com.newsletter.dto.subscriber.SubscriberCreateRequest;
-import com.newsletter.dto.subscriber.SubscriberResponse;
-import com.newsletter.service.SubscriberService;
+import com.newsletter.dto.newsletter.NewsletterCreateRequest;
+import com.newsletter.dto.newsletter.NewsletterResponse;
+import com.newsletter.dto.newsletter.SendNewsletterResponse;
+import com.newsletter.service.NewsletterService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,31 +17,35 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/subscribers")
+@RequestMapping("/api/v1/newsletters")
 @RequiredArgsConstructor
-public class SubscriberController {
+public class NewsletterController {
 
-    private final SubscriberService subscriberService;
+    private final NewsletterService newsletterService;
 
     @PostMapping
-    public ResponseEntity<SubscriberResponse> subscribe(@Valid @RequestBody SubscriberCreateRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(subscriberService.subscribe(request));
+    public ResponseEntity<NewsletterResponse> createDraft(@Valid @RequestBody NewsletterCreateRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(newsletterService.createDraft(request));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> unsubscribe(@PathVariable UUID id) {
-        subscriberService.unsubscribe(id);
-        return ResponseEntity.noContent().build();
+    @PatchMapping("/{id}/schedule")
+    public ResponseEntity<NewsletterResponse> schedule(@PathVariable UUID id) {
+        return ResponseEntity.ok(newsletterService.scheduleNewsletter(id));
+    }
+
+    @PostMapping("/{id}/send")
+    public ResponseEntity<SendNewsletterResponse> sendNow(@PathVariable UUID id) {
+        return ResponseEntity.ok(newsletterService.sendNewsletterNow(id));
     }
 
     @GetMapping
-    public ResponseEntity<Page<SubscriberResponse>> getMySubscribers(
+    public ResponseEntity<Page<NewsletterResponse>> getMyNewsletters(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "createdAt,desc") String sort
     ) {
         Pageable pageable = buildPageable(page, size, sort);
-        return ResponseEntity.ok(subscriberService.getMySubscribers(pageable));
+        return ResponseEntity.ok(newsletterService.getMyNewsletters(pageable));
     }
 
     private Pageable buildPageable(int page, int size, String sort) {
@@ -51,4 +56,5 @@ public class SubscriberController {
                 : Sort.Direction.DESC;
         return PageRequest.of(page, size, Sort.by(direction, sortField));
     }
+
 }
